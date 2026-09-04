@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import ErrorBoundary from './components/ErrorBoundary';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -83,6 +84,7 @@ const App: React.FC = () => {
         {/* Admin Panel (hidden by default) */}
         <AdminPanel />
       </div>
+      <Analytics />
     </ErrorBoundary>
   );
 };
