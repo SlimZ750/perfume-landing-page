@@ -106,7 +106,7 @@ export const sendOrderToSheets = async (orderData: OrderData): Promise<string> =
     }
 
     if (response && response.ok) {
-      const result = await response.json();
+      await response.json(); // Parse response but don't store unused result
       console.log('✅ Order saved to Google Sheets:', orderId);
       return orderId;
     } else {

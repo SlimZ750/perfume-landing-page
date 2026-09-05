@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Star, ShoppingBag } from 'lucide-react';
-import { STORE_CONFIG, Product, formatPrice, generateStars } from '../config/store';
+import { STORE_CONFIG, Product, formatPrice } from '../config/store';
 
 interface ProductsProps {
   onProductSelect: (product: Product) => void;

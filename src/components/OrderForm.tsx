@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { ShoppingBag, User, Phone, MapPin, Minus, Plus, MessageCircle, AlertCircle, CheckCircle, X } from 'lucide-react';
+import { ShoppingBag, User, Phone, MapPin, Minus, Plus, MessageCircle, AlertCircle, CheckCircle } from 'lucide-react';
 import { STORE_CONFIG, Product, formatPrice, getWhatsAppLink } from '../config/store';
 import { sendOrderToSheets, OrderData } from '../services/googleSheets';
 

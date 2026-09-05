@@ -1,5 +1,5 @@
 import React from 'react';
-import { MessageCircle, Phone, Instagram, Mail, MapPin, Star } from 'lucide-react';
+import { MessageCircle, Phone, Instagram, MapPin, Star } from 'lucide-react';
 import { STORE_CONFIG, getWhatsAppLink } from '../config/store';
 
 const Footer: React.FC = () => {
@@ -114,7 +114,9 @@ const Footer: React.FC = () => {
               </a>
               
               <a
-                href="#"
+                href={`https://instagram.com/${STORE_CONFIG.instagram.replace('@', '')}`}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="flex items-center gap-3 text-gray-400 hover:text-pink-400 transition-colors duration-200 group"
                 aria-label="Instagram"
               >
@@ -181,15 +183,33 @@ const Footer: React.FC = () => {
             </div>
             
             <div className="flex items-center gap-6 text-xs text-gray-500">
-              <a href="#" className="hover:text-gray-300 transition-colors duration-200">
+              <button
+                onClick={() => {
+                  // Handle privacy policy action
+                  console.log('Privacy policy clicked');
+                }}
+                className="hover:text-gray-300 transition-colors duration-200"
+              >
                 سياسة الخصوصية
-              </a>
-              <a href="#" className="hover:text-gray-300 transition-colors duration-200">
+              </button>
+              <button
+                onClick={() => {
+                  // Handle terms of service action
+                  console.log('Terms of service clicked');
+                }}
+                className="hover:text-gray-300 transition-colors duration-200"
+              >
                 شروط الخدمة
-              </a>
-              <a href="#" className="hover:text-gray-300 transition-colors duration-200">
+              </button>
+              <button
+                onClick={() => {
+                  // Handle return policy action
+                  console.log('Return policy clicked');
+                }}
+                className="hover:text-gray-300 transition-colors duration-200"
+              >
                 سياسة الإرجاع
-              </a>
+              </button>
             </div>
           </div>
           
