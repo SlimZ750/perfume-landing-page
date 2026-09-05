@@ -1,8 +1,0 @@
-{
-  "name": "perfume-store-functions",
-  "version": "1.0.0",
-  "description": "Netlify functions for perfume store",
-  "dependencies": {
-    "google-spreadsheet": "^4.1.2"
-  }
-}
