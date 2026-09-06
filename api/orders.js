@@ -1,4 +1,5 @@
 const { GoogleSpreadsheet } = require('google-spreadsheet');
+const { JWT } = require('google-auth-library');
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -25,11 +26,12 @@ module.exports = async (req, res) => {
       return res.status(500).json({ error: 'Google Sheets is not configured' });
     }
 
-    const doc = new GoogleSpreadsheet(sheetId);
-    await doc.useServiceAccountAuth({
-      client_email: serviceAccountEmail,
-      private_key: privateKey,
+    const serviceAccountAuth = new JWT({
+      email: serviceAccountEmail,
+      key: privateKey,
+      scopes: ['https://www.googleapis.com/auth/spreadsheets'],
     });
+    const doc = new GoogleSpreadsheet(sheetId, serviceAccountAuth);
     await doc.loadInfo();
 
     let sheet = doc.sheetsByTitle.Orders;
