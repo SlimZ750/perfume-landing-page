@@ -38,17 +38,13 @@ npm run build
 
 ### 5. Hosting Options
 
-#### Option A: Netlify (Recommended)
-1. Push code to GitHub repository
-2. Connect repository to Netlify
-3. Set build command: `npm run build`
-4. Set publish directory: `build`
-5. Deploy automatically
-
-#### Option B: Vercel
-1. Install Vercel CLI: `npm i -g vercel`
-2. Run: `vercel`
-3. Follow the prompts
+#### Vercel (required for the Google Sheets endpoint)
+1. Push code to the GitHub repository.
+2. Import the repository into Vercel.
+3. Set the build command to `npm run build`.
+4. Set the output directory to `build`.
+5. Add `GOOGLE_SHEET_ID`, `GOOGLE_SERVICE_ACCOUNT_EMAIL`, and `GOOGLE_PRIVATE_KEY` in Vercel for Production, Preview, and Development.
+6. Redeploy after changing environment variables.
 
 #### Option C: Traditional Web Hosting
 1. Run `npm run build`

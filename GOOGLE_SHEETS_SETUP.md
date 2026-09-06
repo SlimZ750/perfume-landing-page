@@ -38,14 +38,14 @@ This guide will help you set up automatic order collection and management using 
 4. **Copy Sheet ID**: From URL: 
    `https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID/edit`
 
-## Step 3: Deploy to Netlify
+## Step 3: Deploy to Vercel
 
 ### Environment Variables
-Add these to your Netlify environment variables:
+Add these to your Vercel environment variables for Production, Preview, and Development:
 
 ```bash
-GOOGLE_SHEET_ID=your_sheet_id_here
-GOOGLE_SERVICE_ACCOUNT_EMAIL=your-service-account@project.iam.gserviceaccount.com
+GOOGLE_SHEET_ID=1QF0dW0-hyiaaiPwAIzBOm-aTlTBvY04rPOj4XtfMuOw
+GOOGLE_SERVICE_ACCOUNT_EMAIL=perfume-store-orders@eco-palisade-507600-n5.iam.gserviceaccount.com
 GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nYour private key content here\n-----END PRIVATE KEY-----"
 ```
 
@@ -68,13 +68,7 @@ GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nYour private key content here\n
 
 4. **Deploy!** - Your site will automatically deploy with Google Sheets integration
 
-## Step 4: Alternative Hosting (Vercel)
-
-If using Vercel instead of Netlify:
-
-1. Create `api/orders.js` instead of `netlify/functions/orders.js`
-2. Same environment variables
-3. Deploy to Vercel
+The repository already contains `api/orders.js`, which Vercel deploys as the `/api/orders` serverless endpoint.
 
 ## Step 5: Test the System
 
@@ -132,14 +126,14 @@ Change the "Order Status" column to:
 
 4. **Orders not appearing**
    - Check browser developer console for errors
-   - Verify the API endpoint is working: `/api/orders` or `/.netlify/functions/orders`
+   - Verify the API endpoint is working: `/api/orders`
 
 ### Testing the API Directly
 
 You can test the API endpoint directly:
 
 ```bash
-curl -X POST https://your-site.netlify.app/.netlify/functions/orders \
+curl -X POST https://your-site.vercel.app/api/orders \
   -H "Content-Type: application/json" \
   -d '{"orderId":"TEST-001","customerName":"Test Customer","phone":"0612345678","products":"Test Product","city":"Test City","deliveryAddress":"Test Address","total":299,"orderStatus":"Pending","dateTime":"2026-01-01 12:00:00"}'
 ```
