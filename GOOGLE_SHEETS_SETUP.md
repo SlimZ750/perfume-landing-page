@@ -47,7 +47,15 @@ Add these to your Vercel environment variables for Production, Preview, and Deve
 GOOGLE_SHEET_ID=1QF0dW0-hyiaaiPwAIzBOm-aTlTBvY04rPOj4XtfMuOw
 GOOGLE_SERVICE_ACCOUNT_EMAIL=perfume-store-orders@eco-palisade-507600-n5.iam.gserviceaccount.com
 GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\nYour private key content here\n-----END PRIVATE KEY-----"
+RESEND_API_KEY=re_your_resend_api_key
+RESEND_FROM_EMAIL=orders@your-verified-domain.com
+ORDER_NOTIFICATION_EMAIL=perfume-store-orders@eco-palisade-507600-n5.iam.gserviceaccount.com
 ```
+
+`RESEND_FROM_EMAIL` must use a domain verified in Resend. The notification
+recipient defaults to the Google service-account email if
+`ORDER_NOTIFICATION_EMAIL` is omitted. Emails include the order ID, full name,
+phone, city, address, products, quantities, total, and status.
 
 **Important**: The private key should include the `\n` characters as literal text.
 
