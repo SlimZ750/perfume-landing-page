@@ -21,13 +21,34 @@ npm start
 npm run build
 ```
 
-## ⚙️ Configuration
+## ⚙️ Supabase setup
 
-Edit `src/config/store.ts` to customize:
-- WhatsApp number
-- Products and pricing  
-- Contact information
-- Store branding
+The public landing page works with the typed defaults in `src/config/store.ts` when
+Supabase is not configured. The dashboard is available at `/admin/login` and
+requires Supabase Auth; it never renders the old insecure `AdminPanel` or uses a
+URL parameter as a security boundary.
+
+1. Create a Supabase project and enable **Email** sign-in under Authentication.
+2. Run `supabase/migrations/001_landing_content.sql` in the SQL editor.
+3. Create a user under Authentication → Users and insert its UUID into
+   `public.profiles` as `role = 'admin'` (the SQL file includes the statement).
+4. Copy `.env.example` to `.env.local` and set:
+
+   ```text
+   REACT_APP_SUPABASE_URL=https://YOUR_PROJECT_REF.supabase.co
+   REACT_APP_SUPABASE_ANON_KEY=YOUR_PUBLIC_ANON_KEY
+   ```
+
+   Only the public anon key belongs in the React app. Never expose a
+   `service_role` key or Google/Resend secrets in `REACT_APP_*` variables.
+5. Start the app and sign in at `/admin/login`. Content saved from the dashboard
+   is stored as JSON in `landing_pages`; public users can only read published
+   content. Images are validated (image type, max 5MB) and uploaded to the
+   `landing-images` Storage bucket.
+
+The existing Vercel order endpoint remains unchanged. Keep its Google Sheets and
+Resend variables server-only in Vercel; replace any example values with your
+project's secrets in the Vercel dashboard.
 
 ## 📱 Mobile Optimized
 

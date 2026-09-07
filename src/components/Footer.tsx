@@ -1,8 +1,10 @@
 import React from 'react';
 import { MessageCircle, Phone, Instagram, MapPin, Star } from 'lucide-react';
-import { STORE_CONFIG, getWhatsAppLink } from '../config/store';
+import { getWhatsAppLink } from '../config/store';
+import { useLandingContent } from '../context/LandingContentContext';
 
 const Footer: React.FC = () => {
+  const { content } = useLandingContent();
   const scrollToSection = (href: string) => {
     if (href.startsWith('#')) {
       const element = document.querySelector(href);
@@ -13,8 +15,8 @@ const Footer: React.FC = () => {
   };
 
   const handleWhatsAppClick = () => {
-    const message = STORE_CONFIG.whatsappMessages.general;
-    const whatsappUrl = getWhatsAppLink(message);
+    const message = content.whatsappMessages.general;
+    const whatsappUrl = getWhatsAppLink(message, content.whatsappNumber);
     window.open(whatsappUrl, '_blank');
   };
 
@@ -27,13 +29,13 @@ const Footer: React.FC = () => {
           <div className="lg:col-span-2 space-y-6">
             <div>
               <h3 className="text-3xl font-bold text-gold mb-2">
-                {STORE_CONFIG.storeName}
+                {content.storeName}
               </h3>
               <p className="text-xl text-gray-300 mb-4">
-                {STORE_CONFIG.tagline}
+                {content.tagline}
               </p>
               <p className="text-gray-400 leading-relaxed max-w-md">
-                {STORE_CONFIG.description}
+                {content.description}
               </p>
             </div>
 
@@ -46,7 +48,7 @@ const Footer: React.FC = () => {
                   ))}
                 </div>
                 <span className="text-sm text-gray-400">
-                  {STORE_CONFIG.reviewStats.averageRating}/5 من {STORE_CONFIG.reviewStats.totalCustomers}+ عميل
+                  {content.reviewStats.averageRating}/5 من {content.reviewStats.totalCustomers}+ عميل
                 </span>
               </div>
               
@@ -73,7 +75,7 @@ const Footer: React.FC = () => {
               روابط سريعة
             </h4>
             <nav className="flex flex-col space-y-3">
-              {STORE_CONFIG.navigation.map((link) => (
+              {content.navigation.map((link) => (
                 <button
                   key={link.name}
                   onClick={() => scrollToSection(link.href)}
@@ -106,27 +108,27 @@ const Footer: React.FC = () => {
               </button>
               
               <a
-                href={`tel:${STORE_CONFIG.phone}`}
+                href={`tel:${content.phone}`}
                 className="flex items-center gap-3 text-gray-400 hover:text-gold transition-colors duration-200 group"
               >
                 <Phone size={18} className="flex-shrink-0" />
-                <span>{STORE_CONFIG.phone}</span>
+                <span>{content.phone}</span>
               </a>
               
               <a
-                href={`https://instagram.com/${STORE_CONFIG.instagram.replace('@', '')}`}
+                href={`https://instagram.com/${content.instagram.replace('@', '')}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 text-gray-400 hover:text-pink-400 transition-colors duration-200 group"
                 aria-label="Instagram"
               >
                 <Instagram size={18} className="flex-shrink-0" />
-                <span>{STORE_CONFIG.instagram}</span>
+                <span>{content.instagram}</span>
               </a>
               
               <div className="flex items-center gap-3 text-gray-400">
                 <MapPin size={18} className="flex-shrink-0" />
-                <span>جميع أنحاء المغرب</span>
+                <span>{content.contact.address}</span>
               </div>
             </div>
 
@@ -149,7 +151,7 @@ const Footer: React.FC = () => {
             العطور الأكثر طلباً
           </h4>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {STORE_CONFIG.products.slice(0, 4).map((product) => (
+            {content.products.slice(0, 4).map((product) => (
               <div
                 key={product.id}
                 className="bg-gray-800/50 rounded-lg p-3 hover:bg-gray-800 transition-colors duration-200 cursor-pointer group"
@@ -179,7 +181,7 @@ const Footer: React.FC = () => {
         <div className="container-max section-padding py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="text-gray-400 text-sm text-center md:text-right">
-              © 2026 {STORE_CONFIG.storeName} — جميع الحقوق محفوظة
+              © 2026 {content.storeName} — جميع الحقوق محفوظة
             </div>
             
             <div className="flex items-center gap-6 text-xs text-gray-500">

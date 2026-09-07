@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { MessageCircle, X } from 'lucide-react';
-import { STORE_CONFIG, getWhatsAppLink } from '../config/store';
+import { getWhatsAppLink } from '../config/store';
+import { useLandingContent } from '../context/LandingContentContext';
 
 const FloatingWhatsApp: React.FC = () => {
+  const { content } = useLandingContent();
   const [isVisible, setIsVisible] = useState(false);
   const [isExpanded, setIsExpanded] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
@@ -28,8 +30,8 @@ const FloatingWhatsApp: React.FC = () => {
   }, [isExpanded]);
 
   const handleWhatsAppClick = () => {
-    const message = STORE_CONFIG.whatsappMessages.general;
-    const whatsappUrl = getWhatsAppLink(message);
+    const message = content.whatsappMessages.general;
+    const whatsappUrl = getWhatsAppLink(message, content.whatsappNumber);
     window.open(whatsappUrl, '_blank');
     setIsExpanded(false);
   };
@@ -68,7 +70,7 @@ const FloatingWhatsApp: React.FC = () => {
                       <MessageCircle size={20} />
                     </div>
                     <div>
-                      <div className="font-semibold">{STORE_CONFIG.storeName}</div>
+                      <div className="font-semibold">{content.storeName}</div>
                       <div className="text-xs opacity-90">متجر العطور الفاخرة</div>
                     </div>
                   </div>

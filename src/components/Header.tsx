@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
-import { STORE_CONFIG } from '../config/store';
+import { useLandingContent } from '../context/LandingContentContext';
 
 interface HeaderProps {
   onOrderClick: () => void;
 }
 
 const Header: React.FC<HeaderProps> = ({ onOrderClick }) => {
+  const { content } = useLandingContent();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -49,12 +50,12 @@ const Header: React.FC<HeaderProps> = ({ onOrderClick }) => {
             className="text-2xl md:text-3xl font-bold text-gold cursor-pointer hover:scale-105 transition-transform duration-200"
             onClick={() => scrollToSection('#home')}
           >
-            {STORE_CONFIG.storeName}
+            {content.storeName}
           </div>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-8 space-x-reverse">
-            {STORE_CONFIG.navigation.map((link) => (
+            {content.navigation.map((link) => (
               <button
                 key={link.name}
                 onClick={() => scrollToSection(link.href)}
@@ -92,7 +93,7 @@ const Header: React.FC<HeaderProps> = ({ onOrderClick }) => {
         >
           <div className="py-4 border-t border-gray-200 bg-white/95 backdrop-blur-md rounded-b-lg mt-2">
             <nav className="flex flex-col space-y-4">
-              {STORE_CONFIG.navigation.map((link) => (
+              {content.navigation.map((link) => (
                 <button
                   key={link.name}
                   onClick={() => scrollToSection(link.href)}
