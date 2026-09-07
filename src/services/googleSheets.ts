@@ -78,53 +78,31 @@ export const sendOrderToSheets = async (orderData: OrderData): Promise<string> =
   };
 
   try {
-    // Try different API endpoints based on hosting platform
-    const endpoints = [
-      '/.netlify/functions/orders', // Netlify
-      '/api/orders', // Vercel/other platforms
-    ];
+    const response = await fetch('/api/orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(sheetData),
+    });
 
-    let response;
-    let lastError;
-
-    for (const endpoint of endpoints) {
+    if (!response.ok) {
+      let details = `Request failed with status ${response.status}`;
       try {
-        response = await fetch(endpoint, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(sheetData),
-        });
-
-        if (response.ok) break; // Success, exit loop
-        
-      } catch (error) {
-        lastError = error;
-        continue; // Try next endpoint
+        const errorBody = await response.json();
+        if (errorBody?.error) details = errorBody.error;
+        if (errorBody?.details) details += `: ${errorBody.details}`;
+      } catch {
+        // Keep the HTTP status when the server does not return JSON.
       }
+      throw new Error(details);
     }
 
-    if (response && response.ok) {
-      await response.json(); // Parse response but don't store unused result
-      console.log('✅ Order saved to Google Sheets:', orderId);
-      return orderId;
-    } else {
-      throw new Error(`All API endpoints failed. Last error: ${lastError}`);
-    }
-
+    await response.json();
+    console.log('✅ Order saved to Google Sheets:', orderId);
+    return orderId;
   } catch (error) {
     console.error('❌ Error sending to Google Sheets:', error);
-    
-    // Fallback: Save to localStorage for development/testing
-    if (typeof window !== 'undefined') {
-      const orders = JSON.parse(localStorage.getItem('orders') || '[]');
-      orders.push(sheetData);
-      localStorage.setItem('orders', JSON.stringify(orders));
-      console.log('💾 Order saved to localStorage as fallback:', orderId);
-    }
-    
-    // Return order ID even if Google Sheets fails (don't break the user experience)
-    return orderId;
+    throw error;
   }
 };
