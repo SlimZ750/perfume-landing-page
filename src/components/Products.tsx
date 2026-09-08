@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Star, ShoppingBag } from 'lucide-react';
-import { STORE_CONFIG, Product, formatPrice } from '../config/store';
+import { Product, formatPrice } from '../config/store';
+import { useLandingContent } from '../context/LandingContentContext';
 
 interface ProductsProps {
   onProductSelect: (product: Product) => void;
@@ -8,6 +9,7 @@ interface ProductsProps {
 }
 
 const Products: React.FC<ProductsProps> = ({ onProductSelect, selectedProducts = [] }) => {
+  const { content } = useLandingContent();
   const [isVisible, setIsVisible] = useState(false);
   const [multiSelectMode, setMultiSelectMode] = useState(false);
 
@@ -199,7 +201,7 @@ const Products: React.FC<ProductsProps> = ({ onProductSelect, selectedProducts =
 
         {/* Products Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-          {STORE_CONFIG.products.map((product, index) => (
+          {content.products.map((product, index) => (
             <ProductCard
               key={product.id}
               product={product}

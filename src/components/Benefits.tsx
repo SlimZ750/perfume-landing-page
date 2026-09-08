@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Star, Truck, CreditCard, Heart, Shield, Clock, Award, Users } from 'lucide-react';
-import { STORE_CONFIG } from '../config/store';
+import { useLandingContent } from '../context/LandingContentContext';
 
 const Benefits: React.FC = () => {
+  const { content } = useLandingContent();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -84,7 +85,7 @@ const Benefits: React.FC = () => {
 
         {/* Benefits Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
-          {STORE_CONFIG.benefits.map((benefit, index) => (
+          {content.benefits.map((benefit, index) => (
             <BenefitCard
               key={benefit.id}
               benefit={benefit}
@@ -99,12 +100,12 @@ const Benefits: React.FC = () => {
         }`}>
           {/* Statistics */}
           <div className="text-center">
-            <div className="text-4xl font-bold text-gold mb-2">+{STORE_CONFIG.reviewStats.totalCustomers}</div>
+            <div className="text-4xl font-bold text-gold mb-2">+{content.reviewStats.totalCustomers}</div>
             <div className="text-gray-600">عميل سعيد</div>
           </div>
 
           <div className="text-center">
-            <div className="text-4xl font-bold text-gold mb-2">{STORE_CONFIG.reviewStats.averageRating}</div>
+            <div className="text-4xl font-bold text-gold mb-2">{content.reviewStats.averageRating}</div>
             <div className="text-gray-600">متوسط التقييم</div>
             <div className="stars text-lg mt-1">{Array.from({length: 5}, (_, i) => '⭐').join('')}</div>
           </div>

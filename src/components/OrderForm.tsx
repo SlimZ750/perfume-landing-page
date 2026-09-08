@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { ShoppingBag, User, Phone, MapPin, Minus, Plus, MessageCircle, AlertCircle, CheckCircle } from 'lucide-react';
-import { STORE_CONFIG, Product, formatPrice, getWhatsAppLink } from '../config/store';
+import { Product, formatPrice, getWhatsAppLink } from '../config/store';
+import { useLandingContent } from '../context/LandingContentContext';
 import { sendOrderToSheets, OrderData } from '../services/googleSheets';
 
 interface OrderFormProps {
@@ -65,6 +66,7 @@ const InputField = React.memo<{
 ));
 
 const OrderForm: React.FC<OrderFormProps> = ({ selectedProduct, onProductChange }) => {
+  const { content } = useLandingContent();
   const [isVisible, setIsVisible] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
@@ -150,14 +152,14 @@ const OrderForm: React.FC<OrderFormProps> = ({ selectedProduct, onProductChange 
 
   const getSelectedProducts = (): Array<Product & {quantity: number}> => {
     return formData.selectedProducts.map(sp => {
-      const product = STORE_CONFIG.products.find(p => p.id === sp.productId);
+      const product = content.products.find(p => p.id === sp.productId);
       return product ? { ...product, quantity: sp.quantity } : null;
     }).filter(Boolean) as Array<Product & {quantity: number}>;
   };
 
   const calculateTotal = (): number => {
     return formData.selectedProducts.reduce((total, sp) => {
-      const product = STORE_CONFIG.products.find(p => p.id === sp.productId);
+      const product = content.products.find(p => p.id === sp.productId);
       return total + (product ? product.price * sp.quantity : 0);
     }, 0);
   };
@@ -174,7 +176,7 @@ const OrderForm: React.FC<OrderFormProps> = ({ selectedProduct, onProductChange 
   };
 
   const handleAddProduct = (productId: number) => {
-    const product = STORE_CONFIG.products.find(p => p.id === productId);
+    const product = content.products.find(p => p.id === productId);
     if (!product) return;
     
     setFormData(prev => {
@@ -373,7 +375,7 @@ ${orderDetails}
             
             <button
               onClick={() => {
-                const whatsappUrl = getWhatsAppLink(STORE_CONFIG.whatsappMessages.general);
+                const whatsappUrl = getWhatsAppLink(content.whatsappMessages.general, content.whatsappNumber);
                 window.open(whatsappUrl, '_blank');
               }}
               className="btn-secondary"
@@ -456,7 +458,7 @@ ${orderDetails}
                   
                   {/* Available Products */}
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {STORE_CONFIG.products.map(product => {
+                    {content.products.map(product => {
                       const isSelected = formData.selectedProducts.some(sp => sp.productId === product.id);
                       const selectedProduct = formData.selectedProducts.find(sp => sp.productId === product.id);
                       

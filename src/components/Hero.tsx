@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ChevronDown } from 'lucide-react';
-import { STORE_CONFIG } from '../config/store';
+import { useLandingContent } from '../context/LandingContentContext';
 
 interface HeroProps {
   onOrderClick: () => void;
@@ -8,6 +8,7 @@ interface HeroProps {
 }
 
 const Hero: React.FC<HeroProps> = ({ onOrderClick, onDiscoverClick }) => {
+  const { content } = useLandingContent();
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
@@ -45,17 +46,17 @@ const Hero: React.FC<HeroProps> = ({ onOrderClick, onDiscoverClick }) => {
             {/* Main Headline */}
             <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold text-charcoal leading-tight mb-6">
               <span className="bg-gradient-to-r from-gold to-yellow-600 bg-clip-text text-transparent">
-                عطرك...
+                {content.hero.title.split('...')[0]}...
               </span>
               <br />
               <span className="text-charcoal">
-                عنوان حضورك
+                {content.hero.title.includes('...') ? content.hero.title.split('...')[1].trim() : content.hero.title}
               </span>
             </h1>
 
             {/* Supporting Text */}
             <p className="text-lg md:text-xl text-gray-600 mb-8 max-w-2xl mx-auto lg:mx-0 leading-relaxed">
-              {STORE_CONFIG.description}
+              {content.hero.subtitle}
             </p>
 
             {/* CTA Buttons */}
@@ -66,7 +67,7 @@ const Hero: React.FC<HeroProps> = ({ onOrderClick, onDiscoverClick }) => {
                   isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
                 }`}
               >
-                اطلب الآن
+                {content.hero.ctaText}
               </button>
               <button
                 onClick={onDiscoverClick}
@@ -84,11 +85,11 @@ const Hero: React.FC<HeroProps> = ({ onOrderClick, onDiscoverClick }) => {
             }`}>
               <div className="flex items-center gap-2">
                 <span className="stars text-base">{Array.from({length: 5}, (_, i) => '⭐').join('')}</span>
-                <span>{STORE_CONFIG.reviewStats.averageRating}/5 من آراء العملاء</span>
+                <span>{content.reviewStats.averageRating}/5 من آراء العملاء</span>
               </div>
               <div className="hidden sm:block w-px h-4 bg-gray-300"></div>
               <div>
-                +{STORE_CONFIG.reviewStats.totalCustomers} عميل سعيد
+                +{content.reviewStats.totalCustomers} عميل سعيد
               </div>
             </div>
           </div>
@@ -103,8 +104,8 @@ const Hero: React.FC<HeroProps> = ({ onOrderClick, onDiscoverClick }) => {
                 <div className="aspect-[3/4] bg-gradient-to-br from-gold/20 to-champagne/30 rounded-2xl flex items-center justify-center relative overflow-hidden">
                   {/* Real Product Image */}
                   <img
-                    src="/images/royal-oud.jpg"
-                    alt="عطر Royal Oud"
+                    src={content.hero.image || '/images/royal-oud.jpg'}
+                    alt={content.hero.title}
                     className="w-full h-full object-cover rounded-2xl"
                     onError={(e) => {
                       // Fallback to SVG if image doesn't load

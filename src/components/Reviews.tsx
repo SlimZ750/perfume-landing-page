@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Star, Quote } from 'lucide-react';
-import { STORE_CONFIG } from '../config/store';
+import { useLandingContent } from '../context/LandingContentContext';
 
 const Reviews: React.FC = () => {
+  const { content } = useLandingContent();
   const [isVisible, setIsVisible] = useState(false);
   const [currentReviewSet, setCurrentReviewSet] = useState(0);
 
@@ -28,25 +29,25 @@ const Reviews: React.FC = () => {
   useEffect(() => {
     if (isVisible) {
       const interval = setInterval(() => {
-        setCurrentReviewSet((prev) => (prev + 1) % Math.ceil(STORE_CONFIG.reviews.length / 3));
+        setCurrentReviewSet((prev) => (prev + 1) % Math.ceil(content.testimonials.length / 3));
       }, 5000);
       return () => clearInterval(interval);
     }
-  }, [isVisible]);
+  }, [isVisible, content.testimonials.length]);
 
   // Keyboard navigation for review sets
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
       if (event.key === 'ArrowLeft' && isVisible) {
-        setCurrentReviewSet((prev) => (prev + 1) % Math.ceil(STORE_CONFIG.reviews.length / 3));
+        setCurrentReviewSet((prev) => (prev + 1) % Math.ceil(content.testimonials.length / 3));
       } else if (event.key === 'ArrowRight' && isVisible) {
-        setCurrentReviewSet((prev) => prev === 0 ? Math.ceil(STORE_CONFIG.reviews.length / 3) - 1 : prev - 1);
+        setCurrentReviewSet((prev) => prev === 0 ? Math.ceil(content.testimonials.length / 3) - 1 : prev - 1);
       }
     };
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
-  }, [isVisible]);
+  }, [isVisible, content.testimonials.length]);
 
   const ReviewCard: React.FC<{ review: any; index: number }> = ({ review, index }) => (
     <div
@@ -95,7 +96,7 @@ const Reviews: React.FC = () => {
   const getVisibleReviews = () => {
     const reviewsPerPage = 3;
     const startIndex = currentReviewSet * reviewsPerPage;
-    return STORE_CONFIG.reviews.slice(startIndex, startIndex + reviewsPerPage);
+    return content.testimonials.slice(startIndex, startIndex + reviewsPerPage);
   };
 
   return (
@@ -122,7 +123,7 @@ const Reviews: React.FC = () => {
         }`}>
           <div className="text-center">
             <div className="text-5xl font-bold text-gold mb-2">
-              {STORE_CONFIG.reviewStats.averageRating}
+              {content.reviewStats.averageRating}
             </div>
             <div className="stars text-2xl mb-2">
               {Array.from({length: 5}, (_, i) => '⭐').join('')}
@@ -132,7 +133,7 @@ const Reviews: React.FC = () => {
 
           <div className="text-center">
             <div className="text-5xl font-bold text-gold mb-2">
-              +{STORE_CONFIG.reviewStats.totalCustomers}
+              +{content.reviewStats.totalCustomers}
             </div>
             <div className="text-gray-600 text-lg">عميل سعيد</div>
           </div>
@@ -156,7 +157,7 @@ const Reviews: React.FC = () => {
 
         {/* Review Navigation Dots */}
         <div className="flex justify-center gap-3 mb-12">
-          {Array.from({ length: Math.ceil(STORE_CONFIG.reviews.length / 3) }, (_, i) => (
+          {Array.from({ length: Math.ceil(content.testimonials.length / 3) }, (_, i) => (
             <button
               key={i}
               onClick={() => setCurrentReviewSet(i)}
@@ -181,7 +182,7 @@ const Reviews: React.FC = () => {
           {/* Mini Reviews Ticker */}
           <div className="overflow-hidden">
             <div className="flex gap-4 animate-scroll">
-              {STORE_CONFIG.reviews.concat(STORE_CONFIG.reviews).map((review, index) => (
+              {content.testimonials.concat(content.testimonials).map((review, index) => (
                 <div
                   key={`ticker-${index}`}
                   className="flex-shrink-0 bg-white rounded-lg p-4 shadow-md min-w-[300px]"
