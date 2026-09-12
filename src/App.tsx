@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Analytics } from '@vercel/analytics/react';
 import LandingPage from './components/LandingPage';
 import Dashboard from './dashboard/Dashboard';
 import Login from './dashboard/Login';
@@ -20,6 +21,7 @@ const App: React.FC = () => (
           <Route path="*" element={<LandingPage />} />
         </Routes>
       </BrowserRouter>
+      <Analytics />
     </LandingContentProvider>
   </AuthProvider>
 );
